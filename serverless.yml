@@ -7,6 +7,9 @@ frameworkVersion: ">=1.1.0"
 provider:
   name: aws
   runtime: python3.8
+  apiGateway:
+   shouldStartNameWithService: true
+  lambdaHashingVersion: "20201221"
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
   iamRoleStatements:
@@ -65,7 +68,7 @@ resources:
   Resources:
     TodosDynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
-      DeletionPolicy: Retain
+      DeletionPolicy: Delete
       Properties:
         AttributeDefinitions:
           -

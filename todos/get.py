@@ -39,28 +39,19 @@ def get_todo(event, context):
     try:
        objeto = json.dumps(result['Item'],
                            cls=decimalencoder.DecimalEncoder)
-       print('1')     
        language_code = event['pathParameters']['language']
-       print('2')     
        translate = client.detect_dominant_language(Text=result['Item']['text'])
-       print('3')     
-       print(json.dumps(translate))
-       language_code_init = translate['Languages'][0]['LanguageCode']
-       print('4')     
-       print('language_code= ' + language_code)
-       print('language_code_init= ' + language_code_init)
-       print('5')     
+       language_father = translate['Languages'][0]
+       language_code_init = language_father['LanguageCode']
        textTranslate = clientTranslate.translate_text(Text=result['Item']['text'], SourceLanguageCode=language_code_init, TargetLanguageCode=language_code)
-       print('6')     
-       # create a response
-   
-       
+       result['Item']['text'] = textTranslate['TranslatedText']
     except Exception:
             raise
 
     response = {
           "statusCode": 200,
-          "body": ''
+          "body": json.dumps(result['Item'],
+                           cls=decimalencoder.DecimalEncoder)
     }
 
     return response

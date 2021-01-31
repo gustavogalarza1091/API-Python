@@ -63,7 +63,15 @@ functions:
           path: todos/{id}
           method: delete
           cors: true
-
+          
+  todolist:
+    handler: todos/get.get_todo
+    events:
+      - http:
+          path: todos/{id}/{language}
+          method: get
+          cors: true
+          
 resources:
   Resources:
     TodosDynamoDbTable:
